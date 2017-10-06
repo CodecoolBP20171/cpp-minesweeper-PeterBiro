@@ -38,7 +38,6 @@ namespace {
                     std::cout << ' ';
                 }
 
-
             }
 
         }
@@ -46,10 +45,15 @@ namespace {
     private:
         void fillTable() {
             // step 1 goes here
+            int const MINE_CHANCE = 40; //Chance (in %) if a cell has a mine or not
             char *cellPointer;
             cellPointer = table;
             for(int i = 0; i < height * width; ++i) {
-                *cellPointer++ = '.';
+                if (rand() % 100 < MINE_CHANCE) {
+                    *cellPointer++ = '*';
+                } else {
+                    *cellPointer++ = '.';
+                }
             }
         }
 
