@@ -27,11 +27,30 @@ namespace {
 
         void printTable() const {
             // step 3 goes here
+            char *cellPointer;
+            cellPointer = table;
+
+            for (int i = 0; i < height * width; ++i) {
+                std::cout << *cellPointer++;
+                if ((i+1) % width == 0) {
+                    std::cout << std::endl;
+                } else {
+                    std::cout << ' ';
+                }
+
+
+            }
+
         }
 
     private:
         void fillTable() {
             // step 1 goes here
+            char *cellPointer;
+            cellPointer = table;
+            for(int i = 0; i < height * width; ++i) {
+                *cellPointer++ = '.';
+            }
         }
 
         const size_t width, height;
@@ -41,7 +60,7 @@ namespace {
 
 int main() {
     try {
-        Minesweeper ms(100, 50);
+        Minesweeper ms(10, 10);
         ms.printTable();
         ms.countNeighbours();
         ms.printTable();
