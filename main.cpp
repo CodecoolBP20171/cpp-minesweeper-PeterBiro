@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 
 namespace {
     class Minesweeper {
@@ -23,6 +24,23 @@ namespace {
 
         void countNeighbours() {
             // step 2 goes here
+            char *cellPointer;
+
+            for (int i = 0; i < height * width; ++i) {
+                cellPointer = table + i;
+                if ( *cellPointer == '.' ) {
+                    int mineCounter = 0;
+                    // for (int row = -width; row < width+1; row += width) ??
+                    for (int row = -1; row < 2; ++row) {
+                        for (int col = -1; col < 2; ++col) {
+                            if (cellIsOnTable(i , row, col)) {
+                                mineCounter += ( *(cellPointer+row*width+col) == '*' ) ? 1 : 0;
+                            }
+                        }
+                    }
+                    *cellPointer = '0' + mineCounter;
+                }
+            }
         }
 
         void printTable() const {
@@ -37,17 +55,22 @@ namespace {
                 } else {
                     std::cout << ' ';
                 }
-
             }
-
+            std::cout << std::endl;
         }
 
     private:
+        bool cellIsOnTable(int i, int row, int col) {
+            row *= width;
+            return ( (i+row+col >= 0) && (i+row+col < height * width) && (i % width + col >= 0) && (i % width + col < width) );
+        }
+
         void fillTable() {
             // step 1 goes here
-            int const MINE_CHANCE = 40; //Chance (in %) if a cell has a mine or not
+            int const MINE_CHANCE = 20; //Chance (in %) if a cell has a mine or not
             char *cellPointer;
             cellPointer = table;
+            std::srand(std::time(NULL));
             for(int i = 0; i < height * width; ++i) {
                 if (rand() % 100 < MINE_CHANCE) {
                     *cellPointer++ = '*';
